@@ -49,16 +49,12 @@ runs:
           [[ -z "$key" || "$key" == \#* ]] && continue
           key=$(echo "$key" | xargs)
           val=$(echo "$val" | sed -e 's/^["'\'']//;s/["'\'']$//' | xargs)
-          # Escapa comillas dobles en los valores
           val=$(printf '%s' "$val" | sed 's/"/\\"/g')
           json+="\"$key\":\"$val\","
         done < "$ENV_PATH"
         json="${json%,}}"
-
-        # Log para debug
+    
         echo "Contenido generado: $json"
-
-        # Escribe la salida JSON en una sola línea y sin saltos de línea
-        echo "env-json<<EOF" >> "$GITHUB_OUTPUT"
-        echo "$json" >> "$GITHUB_OUTPUT"
-        echo "EOF" >> "$GITHUB_OUTPUT"
+    
+        # Escribe correctamente el output
+        echo "env-json=$json" >> "$GITHUB_OUTPUT"
