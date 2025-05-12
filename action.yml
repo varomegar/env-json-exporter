@@ -44,14 +44,20 @@ runs:
           echo "❌ No se encontró el archivo: $ENV_PATH"
           exit 1
         fi
+        
         json="{"
-        while IFS='=' read -r key val; do
+        while IFS='=' read -r key val || [ -n "$key" ]; do
           [[ -z "$key" || "$key" == \#* ]] && continue
           key=$(echo "$key" | xargs)
-          val=$(echo "$val" | sed 's/^"//' | sed 's/"$//')
+          val=$(echo "$val" | sed -e 's/^["'\'']//;s/["'\'']$//' | xargs)
+          # Escapa comillas dentro del valor
+          val=$(printf '%s' "$val" | sed 's/"/\\"/g')
           json+="\"$key\":\"$val\","
         done < "$ENV_PATH"
         json="${json%,}}"
+        
+        # Log para debug
         echo "Contenido generado: $json"
-        json=$(jq -n "$json")
+        
+        # Exporta el JSON en una sola línea
         echo "env-json=$json" >> "$GITHUB_OUTPUT"
