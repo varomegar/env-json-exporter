@@ -1,8 +1,9 @@
 name: 'Fetch and parse .env from repo'
 description: 'Clona otro repositorio, extrae el archivo .env y lo convierte a JSON'
 author: 'Varomegar'
-icon: 'terminal'
-color: 'blue'
+branding:
+  icon: 'terminal'
+  color: 'blue'
 
 inputs:
   repo:
