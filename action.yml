@@ -60,4 +60,6 @@ runs:
         echo "Contenido generado: $json"
         
         # Exporta el JSON en una sola línea
-        echo "env-json=$json" >> "$GITHUB_OUTPUT"
+        echo "env-json<<EOF" >> "$GITHUB_OUTPUT"
+        echo "$json" >> "$GITHUB_OUTPUT"
+        echo "EOF" >> "$GITHUB_OUTPUT"
