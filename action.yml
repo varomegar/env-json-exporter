@@ -23,7 +23,7 @@ inputs:
 outputs:
   env-json:
     description: 'Contenido del .env convertido a JSON'
-    value: "${{ steps.parse.outputs.env-json }}"
+    value: ${{ steps.parse.outputs.env-json }}
 
 runs:
   using: "composite"
@@ -55,6 +55,4 @@ runs:
         done < "$ENV_PATH"
         json="${json%,}}"
         echo "Contenido generado: $json"
-        # Escribe correctamente el output
-        echo "env-json=$json"
         echo "env-json=$json" >> "$GITHUB_OUTPUT"
