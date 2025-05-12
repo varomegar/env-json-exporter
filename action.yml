@@ -1,5 +1,8 @@
 name: 'Fetch and parse .env from repo'
 description: 'Clona otro repositorio, extrae el archivo .env y lo convierte a JSON'
+author: 'Varomegar'
+icon: 'https://img.shields.io/badge/Action-env--json--exporter-blue.svg'
+color: 'blue'
 inputs:
   repo:
     description: 'Nombre del repo (e.g. your-org/target-repo)'
