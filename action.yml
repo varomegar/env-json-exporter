@@ -16,7 +16,7 @@ inputs:
   env_path:
     description: 'Ruta al archivo .env'
     required: false
-    default: '.env'
+    default: 'properties.env'
 
 outputs:
   env-json:
@@ -50,4 +50,4 @@ runs:
           json+="\"$key\":\"$val\","
         done < "$ENV_PATH"
         json="${json%,}}"
-        echo "env_json=$json" >> "$GITHUB_OUTPUT"
+        echo "env-json=$json" >> "$GITHUB_OUTPUT"
