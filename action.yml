@@ -52,4 +52,5 @@ runs:
           json+="\"$key\":\"$val\","
         done < "$ENV_PATH"
         json="${json%,}}"
+        echo "Contenido generado: $json"
         echo "env-json=$json" >> "$GITHUB_OUTPUT"
