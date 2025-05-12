@@ -7,28 +7,28 @@ branding:
 
 inputs:
   repo:
-    description: 'Nombre del repo (e.g. your-org/target-repo)'
+    description: 'Name of your repo (e.g. your-org/target-repo)'
     required: true
   ref:
-    description: 'Rama o tag (e.g. main)'
+    description: 'Branch of youyrselectedd repo (e.g. main)'
     required: true
   github_token:
-    description: 'GitHub Token con permiso para clonar el repo'
+    description: 'GitHub Token with read permissions'
     required: true
   env_path:
-    description: 'Ruta al archivo .env'
+    description: 'Rute to properties.env'
     required: false
     default: 'properties.env'
 
 outputs:
   env-json:
-    description: 'Contenido del .env convertido a JSON'
+    description: 'Content of properties.env converted to JSON'
     value: ${{ steps.parse.outputs.env-json }}
 
 runs:
   using: "composite"
   steps:
-    - name: Clonar repositorio de destino
+    - name: Clone Repository
       uses: actions/checkout@v3
       with:
         repository: ${{ inputs.repo }}
@@ -36,7 +36,7 @@ runs:
         ref: ${{ inputs.ref }}
         path: target-repo
 
-    - name: Parsear .env a JSON
+    - name: Parse properties.env to JSON
       id: parse
       shell: bash
       run: |
@@ -54,5 +54,5 @@ runs:
           json+="\"$key\":\"$val\","
         done < "$ENV_PATH"
         json="${json%,}}"
-        echo "Contenido generado: $json"
+        echo "Generated content: $json"
         echo "env-json=$json" >> "$GITHUB_OUTPUT"
