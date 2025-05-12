@@ -1,0 +1,50 @@
+name: 'Fetch and parse .env from repo'
+description: 'Clona otro repositorio, extrae el archivo .env y lo convierte a JSON'
+inputs:
+  repo:
+    description: 'Nombre del repo (e.g. your-org/target-repo)'
+    required: true
+  ref:
+    description: 'Rama o tag (e.g. main)'
+    required: true
+  github_token:
+    description: 'GitHub Token con permiso para clonar el repo'
+    required: true
+  env_path:
+    description: 'Ruta al archivo .env'
+    required: false
+    default: '.env'
+
+outputs:
+  env-json:
+    description: 'Contenido del .env convertido a JSON'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Clonar repositorio de destino
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ inputs.repo }}
+        token: ${{ inputs.github_token }}
+        ref: ${{ inputs.ref }}
+        path: target-repo
+
+    - name: Parsear .env a JSON
+      id: parse
+      shell: bash
+      run: |
+        ENV_PATH="target-repo/${{ inputs.env_path }}"
+        if [[ ! -f "$ENV_PATH" ]]; then
+          echo "❌ No se encontró el archivo: $ENV_PATH"
+          exit 1
+        fi
+        json="{"
+        while IFS='=' read -r key val; do
+          [[ -z "$key" || "$key" == \#* ]] && continue
+          key=$(echo "$key" | xargs)
+          val=$(echo "$val" | sed 's/^"//' | sed 's/"$//')
+          json+="\"$key\":\"$val\","
+        done < "$ENV_PATH"
+        json="${json%,}}"
+        echo "env_json=$json" >> "$GITHUB_OUTPUT"
