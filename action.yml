@@ -23,7 +23,7 @@ inputs:
 outputs:
   env-json:
     description: 'Contenido del .env convertido a JSON'
-    value: ${{ steps.parse.outputs.json }}
+    value: "${{ steps.parse.outputs.env-json }}"
 
 runs:
   using: "composite"
