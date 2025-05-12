@@ -53,4 +53,5 @@ runs:
         done < "$ENV_PATH"
         json="${json%,}}"
         echo "Contenido generado: $json"
+        json=$(jq -n "$json")
         echo "env-json=$json" >> "$GITHUB_OUTPUT"
