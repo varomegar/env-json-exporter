@@ -1,5 +1,5 @@
 name: 'Fetch and parse .env from repo'
-description: 'Clona otro repositorio, extrae el archivo .env y lo convierte a JSON'
+description: 'Clone another repository, extract the properties.env file and convert it to JSON.'
 author: 'Varomegar'
 branding:
   icon: 'terminal'
