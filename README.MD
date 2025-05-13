@@ -1,58 +1,58 @@
 # 🔄 env-json-exporter
 
-**GitHub Action para clonar un repositorio, leer un archivo `.env` y exponerlo como JSON usable entre jobs.**
+**GitHub Action to clone a repository, read a `properties.env` file, and expose it as usable JSON across jobs.**
 
 ---
 
-## 🚀 ¿Qué hace esta acción?
+## 🚀 What does this action do?
 
-Esta acción personalizada permite:
+This custom action allows you to:
 
-- Clonar otro repositorio.
-- Leer un archivo `.env` desde una rama específica.
-- Convertir el contenido del `.env` en un JSON.
-- Exponerlo como `output` para ser consumido con `fromJSON(...)` en otros jobs.
+- Clone another repository.
+- Read a `properties.env` file from a specific branch.
+- Convert the contents of the `properties.env` file into JSON.
+- Expose it as an `output` to be consumed using `fromJSON(...)` in other jobs.
 
-Ideal para compartir configuraciones entre repositorios.
+Ideal for sharing configurations across repositories.
 
 ---
 
 ## 📥 Inputs
 
-| Nombre         | Requerido | Descripción                                                  |
-|----------------|-----------|--------------------------------------------------------------|
-| `repo`         | ✅        | Repositorio desde el que clonar el `.env` (e.g. `org/repo`). |
-| `ref`          | ✅        | Rama o tag del repo (e.g. `main`, `v1.0.0`).                  |
-| `github_token` | ✅        | Token con acceso de lectura al repositorio.                |
-| `env_path`     | ❌        | Ruta al archivo `.env` dentro del repo (por defecto `.env`). |
+| Name           | Required | Description                                                                 |
+|----------------|----------|-----------------------------------------------------------------------------|
+| `repo`         | ✅       | Repository to clone the `properties.env` from (e.g., `org/repo`).           |
+| `ref`          | ✅       | Branch or tag of the repo (e.g., `main`, `v1.0.0`).                         |
+| `github_token` | ✅       | Token with read access to the repository.                                  |
+| `env_path`     | ❌       | Path to the `properties.env` file within the repo (default: `properties.env`). |
 
 ---
 
 ## 📤 Outputs
 
-| Nombre       | Descripción                                      |
-|--------------|--------------------------------------------------|
-| `env-json`   | El contenido del archivo `.env` convertido a JSON |
+| Name         | Description                                                  |
+|--------------|--------------------------------------------------------------|
+| `env-json`   | The contents of the `properties.env` file converted to JSON  |
 
 ---
 
-## 🧪 Ejemplo de uso
+## 🧪 Example usage
 
 ```yaml
 jobs:
   get-env:
-    uses: your-org/env-json-exporter@v1
+    uses: Varomegar/env-json-exporter@v1
     with:
       repo: your-org/config-repo
       ref: main
       github_token: ${{ secrets.GH_TOKEN }}
-      env_path: config/.env
+      env_path: config/properties.env
 
   use-env:
     runs-on: ubuntu-latest
     needs: get-env
     steps:
-      - name: Mostrar variables
+      - name: Show variables
         run: |
-          echo "HOST: ${{ fromJSON(needs.get-env.outputs.env_json).HOST }}"
-          echo "PORT: ${{ fromJSON(needs.get-env.outputs.env_json).PORT }}"
+          echo "EXAMPLE_VARS: ${{ fromJSON(needs.get-env.outputs.env-json).EXAMPLE_VARS }}"
+```
